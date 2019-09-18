@@ -235,7 +235,6 @@ class CartController extends Controller
 
     public function choosePayment(Request $request)
     {
-
         $choosed_payments = $request->choosed_payments;
         $cart_items = $this->cart->all();
         $cart_items = $this->assignOrdersToStore($cart_items);
@@ -260,8 +259,10 @@ class CartController extends Controller
                 }
                 $total_store_discount += $item->quantity - ($item->quantity * $item->foc_selected->foc_discount / 100);
             }
+
             $cart_items[$key]['total_store_cost'] = $total_store_cost;
             $cart_items[$key]['total_store_discount'] = $total_store_discount;
+//            $cart_items[$key]['redeems'] = session()->get('package_store_'.$store->id , null);
         }
 
         session()->put('cart_before_save', $cart_items);

@@ -226,11 +226,10 @@ class FOCPoints
                 ]
             ]);
         }
-
+//        dd($package);
 //        $price = $package->price;
-
-
-//        session()->push()
+//        session()->put('package_store_'.$package->store_id,$package);
+        $this->setPackageIntoCartSession($package);
 //        StorePharmacyPoints::create([
 //            'store_id' => $data['store_id'],
 //            'pharmacy_id' => $data['pharmacy_id'],
@@ -239,6 +238,25 @@ class FOCPoints
 //        ]);
 
         return return_msg(true, 'ok', compact('price'));
+    }
+    protected function setPackageIntoCartSession($package){
+//        session()->put('package_store_'.$package->store_id,$package);
+
+        $cart_items = session()->get('cart_before_save');
+        foreach ($cart_items as $key => $cart_item) {
+            $store = $cart_item['store'];
+            if ($package->store_id == $store->id){
+                $cart_items[$key]['redeems'] = $package;
+
+            }
+        }
+//        StorePharmacyPoints::create([
+//            'store_id' => $data['store_id'],
+//            'pharmacy_id' => $data['pharmacy_id'],
+//            'total_points' => $package->points,
+//            'transaction' => 'out'
+//        ]);
+        session()->put('cart_before_save', $cart_items);
     }
 
     public function getPharmacyPoints(array $data)

@@ -472,9 +472,7 @@ class DrugController extends Controller
      */
     public function allDrugsFiltered(Request $request)
     {
-
         $drugs = $this->drug->allByFilter($request->all());
-
         return return_msg(true, 'ok', compact('drugs'));
     }
 

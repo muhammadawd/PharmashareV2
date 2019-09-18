@@ -112,6 +112,7 @@ class Pharmacy
 
         $cart_items = session()->pull('cart_before_save') ?? [];
 
+
         if (count($cart_items) === 0) {
 
             return return_msg(false);
@@ -133,7 +134,14 @@ class Pharmacy
                     'shipment' => $cart_item['shipment'],
                     'status_id' => $this->getStatus('order')->id,
                 ]);
-
+                if ($cart_item['redeems'] ?? null){
+                    StorePharmacyPoints::create([
+                        'store_id' => $cart_item['store']->id ?? null,
+                        'pharmacy_id' => $pharmacy_id,
+                        'total_points' => $cart_item['redeems']->points ?? null,
+                        'transaction' => 'out'
+                    ]);
+                }
                 $data = [
                     'id' => $cart_item['store']->id,
                     'title' => 'طلب جديد',
@@ -157,6 +165,8 @@ class Pharmacy
 
                 $this->storeSaleDetailsIntoDB($sale, $cart_item['items']);
             }
+
+
         } catch (\Exception $exception) {
 
             dd($exception->getMessage());
