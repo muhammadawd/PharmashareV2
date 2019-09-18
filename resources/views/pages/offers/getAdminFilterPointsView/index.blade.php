@@ -97,8 +97,9 @@
         function filterPage() {
             let params = '';
             let pharmacy_name = $('input[name="pharmacy_name"]').val();
+            let store_id = $('select[name="store_id"]').val();
 
-            params = `?pharmacy_name=${pharmacy_name}&start_date=${start_date}&end_date=${end_date}`;
+            params = `?pharmacy_name=${pharmacy_name}&store_id=${store_id}&start_date=${start_date}&end_date=${end_date}`;
             location.href = '{{route('getAdminFilterPointsView')}}' + params;
         }
 

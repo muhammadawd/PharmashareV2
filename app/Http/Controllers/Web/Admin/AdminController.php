@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\User;
 use App\Modules\User\User as UserModule;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -62,10 +63,11 @@ class AdminController extends Controller
         $user = auth()->user();
 
         if ($user->role_id != 1) return back();
+        $stores = User::where('role_id', 2)->get();
 
         $pharmacies = $this->points->getPharmaciesPointsForAdmin($request)['data']['pharmacies'] ?? [];
 
-        return view('pages.offers.getAdminFilterPointsView.index', compact('page_title', 'user', 'nav', 'pharmacies'));
+        return view('pages.offers.getAdminFilterPointsView.index', compact('page_title', 'user', 'nav', 'pharmacies', 'stores'));
     }
 
     public function handleApprovePosts(Request $request)
@@ -261,7 +263,7 @@ class AdminController extends Controller
         $currentPageItems = $itemCollection->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
         $drugs = new LengthAwarePaginator($currentPageItems, count($itemCollection), $perPage);
         $drugs->setPath($request->url());
-
+//        return $drugs;
         return view('pages.admin.all-products.index', compact('page_title', 'user', 'all_users', 'drugs'));
 
     }
@@ -270,6 +272,17 @@ class AdminController extends Controller
     {
         return $this->drug_ctrl->DeleteMasterDrugById($request->id);
 
+    }
+
+    public function handleAdminDeleteAllProduct(Request $request)
+    {
+        $request->request->add(['ids' => $request->selected_drugs ?? []]);
+        $request->request->remove('selected_drugs');
+        $response = $this->drug_ctrl->deleteMultipleDrugs($request);
+        if (!$response['status']) {
+            return back()->withErrors($response['data']['validation_errors'])->withInput();
+        }
+        return back()->with('success', '');
     }
 
     public function getAdminEditProductView(Request $request, $id)

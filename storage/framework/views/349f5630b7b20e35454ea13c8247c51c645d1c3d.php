@@ -49,7 +49,7 @@
                             <th><?php echo e(__('admin.manufacturer')); ?></th>
                             <th><?php echo e(__('admin.strength')); ?></th>
                             <th><?php echo e(__('admin.packet_size')); ?></th>
-                            <th><?php echo e(app()->getLocale() == 'ar' ? 'التاجر' : 'store'); ?></th> 
+                            <th><?php echo e(app()->getLocale() == 'ar' ? 'التاجر' : 'store'); ?></th>
                             <th></th>
                         </tr>
                         </thead>
@@ -64,22 +64,24 @@
                                 <td>00<?php echo e($drug->id); ?></td>
                                 <td><?php echo e($drug->pharmashare_code); ?></td>
                                 <td><?php echo e($drug->trade_name); ?></td>
-                                <td><?php echo e($drug->form); ?></td>
+                                <td><?php echo e($drug->form ?? $drug->drugCategory->title ?? ''); ?></td>
                                 <td><?php echo e($drug->active_ingredient); ?></td>
                                 <td><?php echo e($drug->manufacturer); ?></td>
                                 <td><?php echo e($drug->strength); ?></td>
                                 <td><?php echo e($drug->pack_size); ?></td>
-                                <td><?php echo e($drug->store->firstname ?? '-'); ?><?php echo e($drug->store->lastname ?? '-'); ?></td> 
+                                <td><?php echo e($drug->store->firstname ?? '-'); ?><?php echo e($drug->store->lastname ?? '-'); ?></td>
                                 <td>
                                     <div class="btn-group direction">
-                                        <button class="btn btn-info p-2 pl-3 pr-3" data-toggle="modal" data-target="#edit_drugs_modal" data-drug="<?php echo e($drug); ?>">
+                                        <button class="btn btn-info p-2 pl-3 pr-3" data-toggle="modal"
+                                                data-target="#edit_drugs_modal" data-drug="<?php echo e($drug); ?>">
                                             <?php echo e(__('admin.edit')); ?>
 
                                         </button>
                                         <button class="btn btn-main p-2 pl-3 pr-3" onclick="approve('<?php echo e($drug->id); ?>')">
                                             <i class="now-ui-icons ui-1_check"></i>
                                         </button>
-                                        <button class="btn btn-danger p-2 pr-3 pl-3" onclick="reject('<?php echo e($drug->pharmashare_code); ?>')">
+                                        <button class="btn btn-danger p-2 pr-3 pl-3"
+                                                onclick="reject('<?php echo e($drug->pharmashare_code); ?>')">
                                             <i class="now-ui-icons ui-1_simple-remove"></i>
                                         </button>
                                     </div>
@@ -90,7 +92,7 @@
                     </table>
 
                 </div>
-                 <div class="col-md-12">
+                <div class="col-md-12">
                     <?php echo e($drugs->appends(request()->except('page'))->render('pagination::bootstrap-4')); ?>
 
                 </div>
