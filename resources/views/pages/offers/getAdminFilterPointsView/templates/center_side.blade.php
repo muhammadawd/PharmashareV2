@@ -16,11 +16,22 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <div class="col-md-5 text-left">
+                                        <div class="col-md-4 text-left">
                                             <label>{{__('store.client_name')}} </label>
-                                            <input type="text" class="form-control" value="{{request()->get('pharmacy_name')}}" name="pharmacy_name">
+                                            <input type="text" class="form-control"
+                                                   value="{{request()->get('pharmacy_name')}}" name="pharmacy_name">
                                         </div>
-                                        <div class="col-md-5 text-left">
+                                        <div class="col-md-4 text-left">
+                                            <label>{{__('store.store_name')}} </label>
+                                            <select class="form-control" name="store_id">
+                                                <option value="">All</option>
+                                                @foreach($stores as $store)
+                                                    <option value="{{$store->id}}"
+                                                            @if(request()->get('store_id') == $store->id) selected @endif>{{$store->firstname}} {{$store->lastname}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 text-left">
                                             <label>{{__('store.date')}} </label>
                                             <input type="text" id="datarange" class="form-control" name="date">
                                         </div>

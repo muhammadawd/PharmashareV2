@@ -17,11 +17,22 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <div class="col-md-5 text-left">
+                                        <div class="col-md-4 text-left">
                                             <label><?php echo e(__('store.client_name')); ?> </label>
-                                            <input type="text" class="form-control" value="<?php echo e(request()->get('pharmacy_name')); ?>" name="pharmacy_name">
+                                            <input type="text" class="form-control"
+                                                   value="<?php echo e(request()->get('pharmacy_name')); ?>" name="pharmacy_name">
                                         </div>
-                                        <div class="col-md-5 text-left">
+                                        <div class="col-md-4 text-left">
+                                            <label><?php echo e(__('store.store_name')); ?> </label>
+                                            <select class="form-control" name="store_id">
+                                                <option value="">All</option>
+                                                <?php $__currentLoopData = $stores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $store): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($store->id); ?>"
+                                                            <?php if(request()->get('store_id') == $store->id): ?> selected <?php endif; ?>><?php echo e($store->firstname); ?> <?php echo e($store->lastname); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 text-left">
                                             <label><?php echo e(__('store.date')); ?> </label>
                                             <input type="text" id="datarange" class="form-control" name="date">
                                         </div>

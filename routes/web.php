@@ -113,6 +113,7 @@ Route::group([
         ], function () {
 
             Route::get('/all-product', 'AdminController@getAdminAllProductView')->name('getAdminAllProductView');
+            Route::post('/delete-all-products', 'AdminController@handleAdminDeleteAllProduct')->name('handleAdminDeleteAllProduct');
             Route::get('/add-product', 'AdminController@getAdminAddProductView')->name('getAdminAddProductView');
             Route::delete('/delete-product', 'AdminController@deleteAdminProduct')->name('deleteAdminProduct');
             Route::get('/edit-product/{id}', 'AdminController@getAdminEditProductView')->name('getAdminEditProductView');
