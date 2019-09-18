@@ -299,7 +299,6 @@ class Drug
     /**
      * retrieve all drugs
      *
-     * @return DrugModel[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function all()
     {
@@ -320,12 +319,11 @@ class Drug
      */
     public function allByFilterStore(array $filters, $user_id = null)
     {
-
         $drugs = $this->allStore($user_id, $filters);
 
         $this->filterDrugs($drugs, $filters);
 
-        return $drugs;
+        return $drugs->values();
     }
 
     /**
@@ -461,6 +459,80 @@ class Drug
                 $query->where('drug_category_id', $category_id);
             });
         } // end if
+
+//        if ($sort_by = $filters['sort_by'] ?? null) {
+//
+//            switch ($sort_by) {
+//                case 'bounce':
+//                    $bb = $bb->orderBy('offered_price_or_bonus','desc')->get();
+//                    dd($bb);
+//
+//                    break;
+//                case 'price':
+//                    $bb = $bb->orderBy('price');
+//                    break;
+//                case 'available_quantity_in_packs':
+//                    $bb = $bb->orderBy('available_quantity_in_packs');
+//                    break;
+//                case 'minimum_order_value_or_quantity':
+//                    $bb = $bb->orderBy('minimum_order_value_or_quantity');
+//                    break;
+//                case 'pharmashare_code':
+//                    $bb = $bb->join('drugs','drug_stores.drug_id','=','drugs.id')->orderBy('drugs.pharmashare_code');
+////                    $bb = $bb->sortBy(function ($item) {
+////                        return $item->drug->pharmashare_code;
+////                    });
+//                    break;
+//                case 'trade_name':
+//                    $bb = $bb->join('drugs','drug_stores.drug_id','=','drugs.id')->orderBy('drugs.trade_name');
+////                    $bb = $bb->sortBy(function ($item) {
+////                        return $item->drug->trade_name;
+////                    });
+//                    break;
+//                case 'form':
+//                    $bb = $bb->join('drugs','drug_stores.drug_id','=','drugs.id')->orderBy('drugs.form');
+////                    $bb = $bb->sortBy(function ($item) {
+////                        return $item->drug->form;
+////                    });
+//                    break;
+//                case 'pack_size':
+//                    $bb = $bb->join('drugs','drug_stores.drug_id','=','drugs.id')->orderBy('drugs.pack_size');
+//
+////                    $bb = $bb->sortBy(function ($item) {
+////                        return $item->drug->pack_size;
+////                    });
+//                    break;
+//                case 'active_ingredient':
+//                    $bb = $bb->join('drugs','drug_stores.drug_id','=','drugs.id')->orderBy('drugs.active_ingredient');
+////                    $bb = $bb->sortBy(function ($item) {
+////                        return $item->drug->active_ingredient;
+////                    });
+//                    break;
+//                case 'strength':
+//                    $bb = $bb->join('drugs','drug_stores.drug_id','=','drugs.id')->orderBy('drugs.strength');
+//
+////                    $bb = $bb->sortBy(function ($item) {
+////                        return $item->drug->strength;
+////                    });
+//                    break;
+//                case 'manufacturer':
+//                    $bb = $bb->join('drugs','drug_stores.drug_id','=','drugs.id')->orderBy('drugs.manufacturer');
+////                    $bb = $bb->sortBy(function ($item) {
+////                        return $item->drug->manufacturer;
+////                    });
+//                    break;
+//                default:
+//            }
+//
+//        } // end if
+//
+//        if ($filters['min_price'] ?? null && $filters['max_price'] ?? null) {
+//
+//            $bb = $bb
+//                ->where('offered_price_or_bonus', '>=', $filters['min_price'])
+//                ->where('offered_price_or_bonus', '<=', $filters['max_price']);
+//        } // end if
+//
         return $bb;
     }
 
@@ -471,9 +543,16 @@ class Drug
 
             switch ($sort_by) {
 
-                case 'offered_price_or_bonus':
+                case 'price':
                     $drugs = $drugs->sortBy('offered_price_or_bonus');
                     break;
+                case 'bonus':
+                    $drugs = $drugs->sortBy('offered_price_or_bonus');
+                    break;
+                case 'store':
+                    $drugs = $drugs->sortBy('user_id');
+                    break;
+
                 case 'available_quantity_in_packs':
                     $drugs = $drugs->sortBy('available_quantity_in_packs');
                     break;
@@ -519,7 +598,7 @@ class Drug
             }
 
         } // end if
-
+//
         if ($filters['min_price'] ?? null && $filters['max_price'] ?? null) {
 
             $drugs = $drugs
@@ -539,7 +618,7 @@ class Drug
                 return $master_drug->drug_category_id == $filters['drug_category_id'];
             });
         } // end if
-
+//
         if ($filters['active_ingredient'] ?? 0 && $filters['active_ingredient'] == 0) {
 
             $drugs = $drugs->filter(function ($drug) use ($filters) {
@@ -551,7 +630,7 @@ class Drug
                 return strtolower(trim($master_drug->active_ingredient)) == strtolower(trim($filters['active_ingredient']));
             });
         } // end if
-
+//
         if ($filters['strength'] ?? 0 && $filters['strength'] == 0) {
 
             $drugs = $drugs->filter(function ($drug) use ($filters) {
@@ -563,7 +642,7 @@ class Drug
                 return strtolower(trim($master_drug->strength)) == strtolower(trim($filters['strength']));
             });
         } // end if
-
+//
         if ($filters['manufacturer'] ?? 0 && $filters['manufacturer'] == 0) {
 
             $drugs = $drugs->filter(function ($drug) use ($filters) {
