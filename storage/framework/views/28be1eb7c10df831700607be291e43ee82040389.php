@@ -61,7 +61,7 @@
                             <tr>
                                 <th>#</th>
                                 <th> <?php echo e(app()->getLocale() == 'ar' ? 'اسم  المنتج' : ' Product name '); ?>  </th>
-                                <th><?php echo e(app()->getLocale() == 'ar' ? '  الكمية المطلوبة' : 'Amount'); ?>: </th>
+                                <th><?php echo e(app()->getLocale() == 'ar' ? '  الكمية المطلوبة' : 'Amount'); ?>:</th>
                                 <th><?php echo e(app()->getLocale() == 'ar' ? 'تكلفة الوحدة  ' : 'Unit Price'); ?></th>
                                 <th><?php echo e(app()->getLocale() == 'ar' ? 'الاجمالي' : '  Total'); ?></th>
                             </tr>
@@ -72,7 +72,7 @@
                                     <td><?php echo e($detail->drugStore->id); ?></td>
                                     <td><?php echo e($detail->drugStore->drug->trade_name); ?>
 
-                                        <br> 
+                                        <br>
                                         <?php
                                             $discount = null;
                                             foreach(collect($detail->drugStore->FOC)->sortByDesc('foc_quantity') as $foc){ 
@@ -90,7 +90,8 @@
                                     <td><?php echo e($detail->drugStore->offered_price_or_bonus); ?></td>
                                     <td>
                                         <?php if($discount): ?>
-                                            <del class="text-danger"><?php echo e($detail->drugStore->offered_price_or_bonus * $detail->quantity); ?></del><br>
+                                            <del class="text-danger"><?php echo e($detail->drugStore->offered_price_or_bonus * $detail->quantity); ?></del>
+                                            <br>
                                             <?php echo e(($detail->drugStore->offered_price_or_bonus - ($detail->drugStore->offered_price_or_bonus * ($discount->foc_discount/100))) * $detail->quantity); ?>
 
                                         <?php else: ?>
@@ -105,7 +106,30 @@
                             <tr>
                                 <td colspan="3"></td>
                                 <td>
-                                    <?php echo e(app()->getLocale() == 'ar' ? 'الاجمالي' : '  Total'); ?>  
+                                    <?php echo e(app()->getLocale() == 'ar' ? 'الاجمالي' : 'Sub Total'); ?>
+
+                                </td>
+                                <td class="bg-warning">
+                                    <?php echo e($sale->total_cost + $sale->total_discount); ?>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td>
+                                    <?php echo e(app()->getLocale() == 'ar' ? 'الخصم' : '  Discount'); ?>
+
+                                </td>
+                                <td class="bg-danger text-white">
+                                    <?php echo e($sale->total_discount ?? 0); ?>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td>
+                                    <?php echo e(app()->getLocale() == 'ar' ? 'الاجمالي النهائي' : '  Total'); ?>
+
                                 </td>
                                 <td class="bg-warning">
                                     <?php echo e($sale->total_cost); ?>
@@ -115,8 +139,9 @@
                             </tfoot>
                         </table>
                     </div>
-                     <div class="col-md-4">
-                        <?php echo e(app()->getLocale() == 'ar' ? ' هذه الاسعار غير شامله ضريبه المبيعات ' : 'Vat Not Included '); ?>  
+                    <div class="col-md-4">
+                        <?php echo e(app()->getLocale() == 'ar' ? ' هذه الاسعار غير شامله ضريبه المبيعات ' : 'Vat Not Included '); ?>
+
                     </div>
                 </div>
             </div>

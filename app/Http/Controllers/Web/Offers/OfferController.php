@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Offers;
 use App\Http\Controllers\Api\AdsController;
 use App\Http\Controllers\Api\DrugController;
 use App\Http\Controllers\Api\DrugStoreController;
+use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Web\UtilityController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,12 +15,14 @@ class OfferController extends Controller
     private $offers;
     private $drugs;
     private $utility;
+    private $points;
 
     public function __construct()
     {
         $this->offers = new AdsController();
         $this->drugs = new DrugController();
         $this->utility = new UtilityController();
+        $this->points = new PointsController();
     }
 
     public function getAddImageOffersView()
@@ -39,6 +42,20 @@ class OfferController extends Controller
         $types = $this->utility->getImageAdsTypes();
 
         return view('pages.offers.addImageOffers.index', compact('page_title', 'user', 'nav', 'image_packages', 'types'));
+    }
+
+    public function getFilterPointsView(Request $request)
+    {
+        $page_title = "Filter Points";
+        $nav = 7;
+        $user = auth()->user();
+
+        if ($user->role_id == 4) return back();
+
+        $request->request->add(['store_id' => $user->id]);
+        $pharmacies = $this->points->getPharmaciesPoints($request)['data']['pharmacies'];
+
+        return view('pages.offers.getFilterPointsView.index', compact('page_title', 'user', 'nav','pharmacies'));
     }
 
     public function getAddDrugsOffersView()

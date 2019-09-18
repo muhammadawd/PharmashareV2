@@ -1,6 +1,11 @@
 <ul class="nav nav-pills nav-pills-primary flex-column">
     @if($user->role_id == 2)
         <li class="nav-item">
+            <a class="nav-link @if($nav == 7) active show @endif" href="{{route('getFilterPointsView')}}">
+                {{__('store.client_points')}}
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link @if($nav == 2) active show @endif" href="{{route('getAddDrugsOffersView')}}">
                 {{__('admin.add_feature_ads')}}
             </a>
@@ -19,6 +24,11 @@
         </li>
     @endif
     @if($user->role_id == 1)
+        <li class="nav-item">
+            <a class="nav-link @if($nav == 8) active show @endif" href="{{route('getAdminFilterPointsView')}}">
+                {{__('store.client_points')}}
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link @if($nav == 6) active show @endif" href="{{route('getAddOfferPackagesView')}}">
                 {{__('admin.add_package')}}
