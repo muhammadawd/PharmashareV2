@@ -109,8 +109,8 @@ class FOCPoints
         $pharmacy_id = $data['pharmacy_id'] ?? null;
         $store_id = $data['store_id'] ?? null;
         $pharmacy_name = $data['pharmacy_name'] ?? null;
-        $from_date = $data['from_date'] ?? null;
-        $to_date = $data['to_date'] ?? null;
+        $from_date = $data['start_date'] ?? null;
+        $to_date = $data['end_date'] ?? null;
         if ($from_date) {
             $from_date = Carbon::parse($data['from_date'])->toDateString();
         }
@@ -228,7 +228,7 @@ class FOCPoints
         }
 
 //        $price = $package->price;
-        
+
 
 //        session()->push()
 //        StorePharmacyPoints::create([

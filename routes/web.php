@@ -133,6 +133,7 @@ Route::group([
             Route::post('/approve-posts', 'AdminController@handleApprovePosts')->name('handleApprovePosts');
 
             Route::get('/get-all-sales', 'AdminController@getSalesView')->name('getAdminSalesView');
+            Route::get('/getAdminFilterPointsView', 'AdminController@getAdminFilterPointsView')->name('getAdminFilterPointsView');
         });
 
         /**
@@ -242,6 +243,7 @@ Route::group([
             'namespace' => 'Offers'
         ], function () {
             Route::get('/getAddImageOffers', 'OfferController@getAddImageOffersView')->name('getAddImageOffersView');
+            Route::get('/getFilterPoints', 'OfferController@getFilterPointsView')->name('getFilterPointsView');
             Route::get('/getAddDrugsOffers', 'OfferController@getAddDrugsOffersView')->name('getAddDrugsOffersView');
             Route::get('/getAllUserOffers', 'OfferController@getAllUserOffersView')->name('getAllUserOffersView')->middleware('can:get-offers');
 

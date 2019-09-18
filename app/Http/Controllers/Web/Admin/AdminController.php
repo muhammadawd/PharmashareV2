@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Api\DrugController;
 use App\Http\Controllers\Api\DrugStoreController;
+use App\Http\Controllers\Api\PointsController;
 use App\Http\Controllers\Api\PostController as PsController;
 use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\UserController;
@@ -21,6 +22,7 @@ class AdminController extends Controller
     private $user_ctrl;
     private $sale;
     private $post;
+    private $points;
 
     public function __construct()
     {
@@ -30,6 +32,7 @@ class AdminController extends Controller
         $this->user_ctrl = new UserController();
         $this->sale = new SaleController();
         $this->post = new PsController();
+        $this->points = new PointsController();
     }
 
     public function getApprovePosts(Request $request)
@@ -49,6 +52,20 @@ class AdminController extends Controller
 //        $posts = $posts->values();
 //        return $posts;
         return view('pages.admin.approve-posts.index', compact('page_title', 'user', 'all_users', 'posts'));
+    }
+
+    public function getAdminFilterPointsView(Request $request)
+    {
+
+        $page_title = "Filter Points";
+        $nav = 8;
+        $user = auth()->user();
+
+        if ($user->role_id != 1) return back();
+
+        $pharmacies = $this->points->getPharmaciesPointsForAdmin($request)['data']['pharmacies'] ?? [];
+
+        return view('pages.offers.getAdminFilterPointsView.index', compact('page_title', 'user', 'nav', 'pharmacies'));
     }
 
     public function handleApprovePosts(Request $request)
