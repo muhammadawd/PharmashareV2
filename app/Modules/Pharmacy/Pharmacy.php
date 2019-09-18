@@ -124,17 +124,19 @@ class Pharmacy
             $sale_number = uniqid();
 
             foreach ($cart_items as $cart_item) {
+                $discount_redeem = $cart_item['redeems']->price ?? 0;
 
                 $sale = $this->storeSaleIntoDB([
                     'store_id' => $cart_item['store']->id,
                     'pharmacy_id' => $pharmacy_id,
-                    'total_cost' => $cart_item['total_store_cost'],
+                    'total_cost' => $cart_item['total_store_cost'] - $discount_redeem,
                     'sale_number' => $sale_number,
                     'payment_type_id' => $cart_item['choosed_payment']->id,
                     'shipment' => $cart_item['shipment'],
                     'status_id' => $this->getStatus('order')->id,
                 ]);
-                if ($cart_item['redeems'] ?? null){
+
+                if ($cart_item['redeems'] ?? null) {
                     StorePharmacyPoints::create([
                         'store_id' => $cart_item['store']->id ?? null,
                         'pharmacy_id' => $pharmacy_id,
@@ -142,6 +144,7 @@ class Pharmacy
                         'transaction' => 'out'
                     ]);
                 }
+
                 $data = [
                     'id' => $cart_item['store']->id,
                     'title' => 'طلب جديد',

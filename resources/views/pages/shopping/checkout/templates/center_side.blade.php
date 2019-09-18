@@ -55,6 +55,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <?php $total_redeems = 0; ?>
                                 @foreach($cart_before_save as $item)
                                     <tr>
                                         <td>{{$item['store']->firstname . " " . $item['store']->lastname}}
@@ -63,13 +64,22 @@
                                                     onclick="redeemPoints('{{$item['store']->id}}','{{$item['total_points_with_pharmacy']}}')">{{app()->getLocale() == 'ar' ? 'خصومات' : 'redeem'}}</button>
                                         </td>
                                         <td>{{$item['total_store_cost']}}</td>
-                                        <td>{{$item['total_points_with_pharmacy']}}</td>
+                                        <td>
+                                            @if($item['redeems']['points'] ?? null)
+                                                <del class="text-danger">{{$item['total_points_with_pharmacy'] ?? 0}}</del>
+                                                <br>
+                                                <span class="text-black">{{($item['total_points_with_pharmacy'] ?? 0) - ($item['redeems']['points'] ?? 0)}}</span>
+                                            @else
+                                                {{$item['total_points_with_pharmacy'] ?? 0}}
+                                            @endif
+                                        </td>
                                         @if(app()->getLocale() == 'ar')
                                             <td>{{$item['choosed_payment']->display_name_ar}}</td>
                                         @else
                                             <td>{{$item['choosed_payment']->display_name_en}}</td>
                                         @endif
                                     </tr>
+                                    <?php $total_redeems += $item['redeems']['price'] ?? 0; ?>
                                 @endforeach
                                 </tbody>
                             </table>
@@ -161,10 +171,27 @@
                                 <tr>
                                     <td colspan="3"></td>
                                     <td>
+                                        {{app()->getLocale() == 'ar' ? 'قيمة النقاط' : 'Redeem Price'}}
+                                    </td>
+                                    <td class="bg-danger text-white">
+                                        {{$total_redeems}}
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"></td>
+                                    <td>
                                         {{__('pharmacy.total_plus')}}
                                     </td>
                                     <td class="bg-warning">
-                                        {{$total-$total_discount}}
+                                        @if($total_redeems)
+
+                                            <del class="text-black">{{$total-$total_discount}}</del><br>
+                                            {{$total-$total_discount-$total_redeems}}
+                                        @else
+                                            {{$total-$total_discount}}
+                                        @endif
+
                                     </td>
                                 </tr>
                                 </tfoot>

@@ -163,7 +163,7 @@
                                     <option value="bounce">Bounce</option>
                                     <option value="reward_points">Reward Points</option>
                                     <option value="store">Store</option>
-                                    <option value="active_ingredient">Store</option>
+                                    <option value="active_ingredient">Active Ingredient</option>
                                     <option value="brand">Brand</option>
                                     <option value="manufacturer">Manufacturer</option>
                                 <?php endif; ?>
